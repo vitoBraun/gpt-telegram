@@ -19,3 +19,8 @@ bot.on("message", async (msg) => {
     bot.sendMessage(chatId, gptResponse);
   }
 });
+
+bot.onText("/start", async (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, "Приветствую! Я ChatGPT, введите ваш вопрос.");
+});
