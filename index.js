@@ -17,7 +17,7 @@ bot.on("message", async (msg) => {
     (allowedUsers?.includes(msg.chat.username) || allowedUsers == null) &&
     msg.text !== "/start"
   ) {
-    bot.sendMessage(chatId, "пишу ответ, ждите...");
+    bot.sendChatAction(chatId, "typing");
     const gptResponse = await sendMessageToChatGPT(msg.text, chatId);
     bot.sendMessage(chatId, gptResponse);
   }
