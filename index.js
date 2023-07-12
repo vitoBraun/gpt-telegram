@@ -1,29 +1,18 @@
-const express = require("express");
 require("dotenv").config();
 const { sendMessageToChatGPT } = require("./services/openai-service");
-const app = express();
 
-app.use(express.json());
+const TelegramBot = require("node-telegram-bot-api");
 
-const port = process.env.PORT || 6000;
+const bot = new TelegramBot(process.env.TGBOT_API_KEY, { polling: true });
 
-app.post("/find-complexity", async (req, res) => {
-  const { message } = req.body;
+const allowedUsers =
+  process.env.ALLOWED_USERS?.replace(" ", "").split(",") || null;
 
-  try {
-    const response = await sendMessageToChatGPT(message);
-    return res.status(200).json({ success: true, data: response });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-      error: error.response
-        ? error.response.data
-        : "There was an issue on the server",
-    });
+bot.on("message", async (msg) => {
+  if (allowedUsers?.includes(msg.chat.username) || allowedUsers == null) {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, "пишу ответ, ждите...");
+    const gptResponse = await sendMessageToChatGPT(msg.text);
+    bot.sendMessage(chatId, gptResponse);
   }
-});
-
-app.listen(port, () => {
-  console.log(`Chat Gpt telegram is running http://localhost:${port}`);
 });
