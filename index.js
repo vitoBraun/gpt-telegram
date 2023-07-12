@@ -18,7 +18,7 @@ bot.on("message", async (msg) => {
     msg.text !== "/start"
   ) {
     bot.sendMessage(chatId, "пишу ответ, ждите...");
-    const gptResponse = await sendMessageToChatGPT(msg.text);
+    const gptResponse = await sendMessageToChatGPT(msg.text, chatId);
     bot.sendMessage(chatId, gptResponse);
   }
 });

@@ -2,14 +2,15 @@ const { OpenAIApi, Configuration } = require("openai");
 const configuration = new Configuration({ apiKey: process.env.OPEN_AI_KEY });
 const openaiInstance = new OpenAIApi(configuration);
 
-async function sendMessageToChatGPT(message) {
+async function sendMessageToChatGPT(message, chatId) {
   const response = await openaiInstance.createCompletion({
     model: "text-davinci-003",
     prompt: message,
     max_tokens: 1000,
     temperature: 0,
+    user: chatId.toString(),
   });
   return response.data.choices[0].text.trim();
 }
 
-module.exports = {sendMessageToChatGPT};
+module.exports = { sendMessageToChatGPT };
