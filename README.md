@@ -22,3 +22,9 @@ npm install
 ```
 npm start
 ```
+
+Либо используя менеджер процессов pm2 запустить
+
+```
+pm2 start index.js --name gtp-telegram-bot
+```
